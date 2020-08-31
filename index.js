@@ -43,6 +43,9 @@ console.log(readyBlockTags); /////**** */
 
 ulElemRef.append(...readyBlockTags);
 
+/**
+Implementing delegation on ul.js-gallery and getting url of large image */
+
 const onClickImg = (event) => {
     if (event.target.nodeName !== "IMG") {
         return;
