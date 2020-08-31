@@ -2,27 +2,52 @@
 /**
  * ******* Задание в файле README.md ********
  */
-// import "gallery-items.js"
+
 import galleryItems from "./gallery-items.js";
-console.log(galleryItems[0].description);
 
-const createGalleruTagImg = (arr) => {
-    const imagesRef = document.createElement("img");
-    imagesRef.setAttribute('data-source', arr.preview)
-    imagesRef.src = arr.preview;
-    imagesRef.alt = arr.description;
-    // imagesRef.data.set.sourse = arr.preview;
-    imagesRef.classList.add('img-style');
-    return imagesRef;
+/** 
+Creation and rendering of markup according to the data array and the provided template. */
+const createElementTag = (tagName, className, attrs = {}) => {
+    const elem = document.createElement(tagName);
+    elem.classList.add(className);
+    for (let key in attrs) {
+        elem.setAttribute(key, attrs[key])
+    }
+    return elem;
+}
+
+const createGalleryBlockTag = (arr) => {
+
+    const galleryImageRef = createElementTag("img", "gallery__image", {
+        "data-source": arr.original,
+        src:arr.preview,
+        alt:arr.description,
+    });
+
+    const linkElem = createElementTag("a", "gallery__link", {
+        "href": arr.original
+    });
+
+    linkElem.append(galleryImageRef);
+
+    const liItemElem = createElementTag("li", "gallery__item")
+    liItemElem.append(linkElem)
+
+    return liItemElem;
 };
-const readyImgTag = galleryItems.map((jpg) => createGalleruTagImg(jpg));
-console.log(readyImgTag[1], readyImgTag[2]);
 
+const readyBlockTags = galleryItems.map((jpg) => createGalleryBlockTag(jpg));
 
-const linkElem = document.createElement('a');
-linkElem.classList.add('gallery__link');
+const ulElemRef = document.querySelector('.js-gallery');
+console.log(readyBlockTags); /////**** */
 
-// const ulGalleryRef = document.querySelector(".js-gallery");
-// ulGalleryRef.append(...readyImgTag);
+ulElemRef.append(...readyBlockTags);
 
-// console.log(ulGalleryRef);
+const onClickImg = (event) => {
+    if (event.target.nodeName !== "IMG") {
+        return;
+    }
+    console.log(event.target.dataset.source);
+};
+
+ulElemRef.addEventListener('click', onClickImg);
