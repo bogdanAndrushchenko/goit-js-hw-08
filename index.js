@@ -41,6 +41,7 @@ const refs = {
   ulElem: document.querySelector(".js-gallery"),
   openModal: document.querySelector(".js-lightbox"),
   btnClose: document.querySelector('[data-action="close-lightbox"]'),
+  lightBoxOverlay: document.querySelector(".lightbox__overlay"),
 };
 
 refs.ulElem.append(...readyBlockTags);
@@ -49,8 +50,14 @@ refs.ulElem.append(...readyBlockTags);
 Implementing delegation on ul.js-gallery and getting url of large image
 Opening a modal window by clicking on a gallery item. */
 
+const onPressEscape = (event) => {
+  if (event.code === "Escape") {
+    closeModal();
+  }
+};
+
 const onOpenModal = () => {
-  // window.addEventListener("keydown", onPressEscape);
+  window.addEventListener("keydown", onPressEscape);
   refs.openModal.classList.add("is-open");
 };
 
@@ -77,18 +84,22 @@ Closing the modal window by clicking on the button [data-action = "close-modal"]
 and clearing the src attribute value of the img.lightbox__image element
  */
 
-const closeModal = (event) => {
-  // window.removeEventListener("keydown", onPressEscape);
+const closeModal = () => {
+  window.removeEventListener("keydown", onPressEscape);
+
   refs.openModal.classList.remove("is-open");
-  openImg.src = "";
+  openImg.src = " ";
   openImg.alt = " ";
-  console.log(event.target);
+};
+
+const closeOnBackDropClick = () => {
+  console.log("x");
+  if (event.target.nodeName !== "IMG") {
+    closeModal();
+  }
+  console.log(event.target, event.currentTarget);
 };
 
 refs.ulElem.addEventListener("click", onClickImg);
 refs.btnClose.addEventListener("click", closeModal);
-
-// const closeModalBtn = document.querySelector(
-//   'button[data-action="close-modal"]'
-// );
-// const backDropRef = document.querySelector(".js-backdrop");
+refs.lightBoxOverlay.addEventListener("click", closeModal);
