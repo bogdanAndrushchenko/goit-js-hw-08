@@ -41,7 +41,7 @@ const refs = {
   ulElem: document.querySelector(".js-gallery"),
   openModal: document.querySelector(".js-lightbox"),
   btnClose: document.querySelector('[data-action="close-lightbox"]'),
-  lightBoxOverlay: document.querySelector(".lightbox__overlay"),
+  lightBoxContent: document.querySelector(".lightbox__content"),
 };
 
 refs.ulElem.append(...readyBlockTags);
@@ -93,13 +93,13 @@ const closeModal = () => {
 };
 
 const closeOnBackDropClick = () => {
-  console.log("x");
-  if (event.target.nodeName !== "IMG") {
+  if (event.target === event.currentTarget) {
     closeModal();
+    return;
   }
   console.log(event.target, event.currentTarget);
 };
 
 refs.ulElem.addEventListener("click", onClickImg);
 refs.btnClose.addEventListener("click", closeModal);
-refs.lightBoxOverlay.addEventListener("click", closeModal);
+refs.lightBoxContent.addEventListener("click", closeOnBackDropClick);
