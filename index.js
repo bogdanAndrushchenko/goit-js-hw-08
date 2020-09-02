@@ -50,14 +50,15 @@ refs.ulElem.append(...readyBlockTags);
 Implementing delegation on ul.js-gallery and getting url of large image
 Opening a modal window by clicking on a gallery item. */
 
-const onPressEscape = (event) => {
-  if (event.code === "Escape") {
-    closeModal();
-  }
+const onPressHandler = (event) => {
+  if (event.code === "Escape") closeModal();
+  if (event.code === "ArrowLeft") onPressPrev();
+  //   if(event.code === "ArrowRight") onPressNext ()
 };
 
 const onOpenModal = () => {
-  window.addEventListener("keydown", onPressEscape);
+  window.addEventListener("keydown", onPressHandler);
+  console.log()
   refs.openModal.classList.add("is-open");
 };
 
@@ -85,21 +86,31 @@ and clearing the src attribute value of the img.lightbox__image element
  */
 
 const closeModal = () => {
-  window.removeEventListener("keydown", onPressEscape);
+  window.removeEventListener("keydown", onPressHandler);
 
   refs.openModal.classList.remove("is-open");
   openImg.src = " ";
   openImg.alt = " ";
 };
 
-const closeOnBackDropClick = () => {
+const closeOnBackDropClick = (event) => {
   if (event.target === event.currentTarget) {
     closeModal();
     return;
   }
-  console.log(event.target, event.currentTarget);
+};
+
+const onPressPrev = () => {
+  const idx = galleryItems.findIndex((el) => el.original === );
+//   const result = galleryItems.find((el, i) => i === idx);
+// //   const prev = galleryItems[idx - 1].original;
+  console.log(event.target, event.code,);
+
+//   openImg.src = event.target.dataset.source;
+//   openImg.alt = event.target.alt;
 };
 
 refs.ulElem.addEventListener("click", onClickImg);
 refs.btnClose.addEventListener("click", closeModal);
 refs.lightBoxContent.addEventListener("click", closeOnBackDropClick);
+window.addEventListener("keydown", onPressHandler);
