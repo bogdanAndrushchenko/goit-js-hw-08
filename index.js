@@ -29,13 +29,15 @@ const createGalleryBlockTag = (arr) => {
 
   linkElem.append(galleryImageRef);
 
-  const liItemElem = createElementTag("li", "gallery__item");
+  const liItemElem = createElementTag("li", "gallery__item", {});
   liItemElem.append(linkElem);
 
   return liItemElem;
 };
 
-const readyBlockTags = galleryItems.map((jpg) => createGalleryBlockTag(jpg));
+const readyBlockTags = galleryItems.map((jpg, i) =>
+  createGalleryBlockTag(jpg, i)
+);
 
 const refs = {
   ulElem: document.querySelector(".js-gallery"),
@@ -52,13 +54,13 @@ Opening a modal window by clicking on a gallery item. */
 
 const onPressHandler = (event) => {
   if (event.code === "Escape") closeModal();
-  if (event.code === "ArrowLeft") onPressPrev();
-  //   if(event.code === "ArrowRight") onPressNext ()
+  if (event.code === "ArrowLeft") onPressPrev(galleryItems);
+  if (event.code === "ArrowRight") onPressNext(galleryItems)
 };
 
 const onOpenModal = () => {
   window.addEventListener("keydown", onPressHandler);
-  console.log()
+
   refs.openModal.classList.add("is-open");
 };
 
@@ -100,14 +102,24 @@ const closeOnBackDropClick = (event) => {
   }
 };
 
-const onPressPrev = () => {
-  const idx = galleryItems.findIndex((el) => el.original === );
-//   const result = galleryItems.find((el, i) => i === idx);
-// //   const prev = galleryItems[idx - 1].original;
-  console.log(event.target, event.code,);
+const onPressPrev = (arr) => {
+  const activeIdx = arr.findIndex((el) => el.original === openImg.src);
+  const prevImg = arr.find((el, i) => i === activeIdx - 1);
+  if (activeIdx === 0) {
+    return
+  }
 
-//   openImg.src = event.target.dataset.source;
-//   openImg.alt = event.target.alt;
+  openImg.src = prevImg.original
+  openImg.alt = prevImg.alt;
+};
+const onPressNext = (arr) => {
+  const activeIdx = arr.findIndex((el) => el.original === openImg.src);
+  const nextImg = arr.find((el, i) => i === activeIdx + 1);
+  if (activeIdx === arr.length - 1) {
+    return
+  }
+  openImg.src = nextImg.original;
+  openImg.alt = nextImg.alt;
 };
 
 refs.ulElem.addEventListener("click", onClickImg);
